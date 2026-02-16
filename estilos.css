@@ -1,0 +1,4 @@
+:root {
+	/* Sobreescribir el color primary para adecuarlo al modelo*/
+	--bs-primary: #20c997;
+}

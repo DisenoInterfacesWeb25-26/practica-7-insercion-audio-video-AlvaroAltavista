@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Controlador de video</title>
+
+		<link href="../css/bootstrap.min.css" rel="stylesheet" />
+		<link href="../estilos.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg bg-body-tertiary">
+			<div class="container-fluid px-5">
+				<a class="navbar-brand" href="https://www.eniun.com/" target="_blank">
+					<img src="https://www.eniun.com/wp-content/uploads/ENIUN@2x.png" alt="Eniun logo" width="100px" />
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="../index.html">Inicio</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Blog</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Servicios</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">SEO</a></li>
+								<li><a class="dropdown-item" href="#">Desarrollo web</a></li>
+								<li><hr class="dropdown-divider" /></li>
+								<li><a class="dropdown-item" href="#">Marketing online</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="contacto.html">Contacto</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="tabla.html">Tabla</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="controles-video.html">Video</a>
+						</li>
+					</ul>
+					<form class="d-flex" role="search">
+						<input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search" />
+						<button class="btn btn-outline-success" type="submit">Buscar</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Breadcrumb -->
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb px-5 py-2 m-0">
+				<li class="breadcrumb-item" aria-current="page"><a href="../index.html">Inicio</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Contacto</li>
+			</ol>
+		</nav>
+
+		<!-- Sección Principal -->
+		<section id="main" class="container text-center my-5">
+			<video id="medio" width="720" height="400">
+				<source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4" />
+			</video>
+
+			<nav>
+				<input type="button" id="reiniciar" value="reiniciar" />
+				<input type="button" id="retrasar" value="&laquo;" />
+				<input type="button" id="play" value="&#9658;" />
+				<input type="button" id="adelantar" value="&raquo;" />
+				<input type="button" id="silenciar" value="silenciar" />
+				<label>Volumen</label>
+				<input type="button" id="menosVolumen" value="-" />
+				<input type="button" id="masVolumen" value="+" />
+			</nav>
+		</section>
+
+		<!-- Footer -->
+		<footer class="bg-primary p-5 d-flex justify-content-between align-items-center">
+			<a href="http://eniun.com" class="link-light fs-4 text-decoration-none">Eniun.com</a>
+			<a href="#" class="link-light fs-6 text-decoration-none">Politica de privacidad y cookies</a>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="../js/bootstrap.bundle.min.js"></script>
+		<script>
+			function accionPlay() {
+				if (!medio.paused && !medio.ended) {
+					medio.pause();
+					play.value = "\u25BA"; //\u25BA
+					document.body.style.backgroundColor = "#fff";
+				} else {
+					medio.play();
+					play.value = "||";
+					document.body.style.backgroundColor = "grey";
+				}
+			}
+			function accionReiniciar() {
+				if (!medio.paused && !medio.ended) {
+					//Usar propiedad .currentTime
+					medio.currentTime = 0;
+					//Reproducir el vídeo
+					medio.play();
+					//Cambiar el valor del botón a ||
+					play.value = "||";
+				} else {
+					medio.currentTime = 0;
+					document.body.style.backgroundColor = "#fff";
+				}
+			}
+			function accionRetrasar() {
+				if (medio.currentTime >= 5) {
+					medio.currentTime -= 5;
+				} else {
+					medio.currentTime = 0;
+				}
+				medio.play();
+			}
+			function accionAdelantar() {
+				if (medio.duration - 5 > medio.currentTime) {
+					medio.currentTime += 5;
+					medio.play();
+				}
+
+				//Contemplar que no existen valores mayores a medio.duration
+			}
+			function accionSilenciar() {
+				if (medio.muted === false) {
+					medio.muted = true;
+					silenciar.value = "Escuchar";
+				} else {
+					medio.muted = false;
+					silenciar.value = "Silenciar";
+				}
+				//Utilizar medio.muted = true; o medio.muted = false;
+			}
+			function accionMasVolumen() {
+				if (medio.volume <= 0.9) {
+					medio.volume += 0.1;
+				}
+				//Contemplar que el valor máximo de volumen es 1
+			}
+			function accionMenosVolumen() {
+				if (medio.volume >= 0.1) {
+					medio.volume -= 0.1;
+				}
+				//Contemplar que el valor mínimo de volumen es 0
+			}
+
+			function iniciar() {
+				medio = document.getElementById("medio");
+				play = document.getElementById("play");
+				reiniciar = document.getElementById("reiniciar");
+				retrasar = document.getElementById("retrasar");
+				adelantar = document.getElementById("adelantar");
+				silenciar = document.getElementById("silenciar");
+
+				play.addEventListener("click", accionPlay);
+				reiniciar.addEventListener("click", accionReiniciar);
+				retrasar.addEventListener("click", accionRetrasar);
+				adelantar.addEventListener("click", accionAdelantar);
+				silenciar.addEventListener("click", accionSilenciar);
+				menosVolumen.addEventListener("click", accionMenosVolumen);
+				masVolumen.addEventListener("click", accionMasVolumen);
+			}
+
+			window.addEventListener("load", iniciar, false);
+		</script>
+	</body>
+</html>
